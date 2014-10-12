@@ -1,10 +1,9 @@
-# /etc/init/flume.conf
-description 'Flume startup'
-author 'Murali Raju'
+# Upstart script to start flume, usually found here: /etc/init/flume.conf
+
 env NAME=FlumeNode
-env LOG_FILE=/var/log/flume-node.log
-env USER=flume
-env SCRIPT_FILE=/usr/local/bin/start-flume.sh
+env LOG_FILE=<%= @log_file %>
+env USER=<%= node[:flume][:user] %>
+env SCRIPT_FILE=<%= node[:flume][:home_dir] %>/bin/flume-start.sh
 start on runlevel [2345] stop on runlevel [016]
 # Respawn in case of a crash, with default parameters
 # respawn

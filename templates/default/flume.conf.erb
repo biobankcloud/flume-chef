@@ -1,0 +1,25 @@
+
+HopsAgent.sources = Hops
+HopsAgent.channels = MemChannel
+HopsAgent.sinks = HDFS
+
+HopsAgent.sources.Hops.type = com.cloudera.flume.source.HopsSource
+HopsAgent.sources.Hops.channels = FileChannel
+HopsAgent.sources.Hops.consumerKey = 
+HopsAgent.sources.Hops.consumerSecret = 
+HopsAgent.sources.Hops.accessToken =  
+HopsAgent.sources.Hops.accessTokenSecret =  
+HopsAgent.sources.Hops.keywords = hadoop, hadoop jobs, bigdata, hadoop administrator,
+
+HopsAgent.sinks.HDFS.channel = MemChannel
+HopsAgent.sinks.HDFS.type = hdfs
+HopsAgent.sinks.HDFS.hdfs.path = hdfs://<%= %>:8020/user/flume/tweets/%Y/%m/%d/%H/
+HopsAgent.sinks.HDFS.hdfs.fileType = DataStream
+HopsAgent.sinks.HDFS.hdfs.writeFormat = Text
+HopsAgent.sinks.HDFS.hdfs.batchSize = 1000
+HopsAgent.sinks.HDFS.hdfs.rollSize = 0
+HopsAgent.sinks.HDFS.hdfs.rollCount = 10000
+
+HopsAgent.channels.MemChannel.type = memory
+HopsAgent.channels.MemChannel.capacity = 10000
+HopsAgent.channels.MemChannel.transactionCapacity = 100

@@ -1,3 +1,13 @@
 #!/bin/bash
 
-flume-ng agent --conf-file /etc/flume/conf/flume.conf --name HopsAgent > /var/log/flume/flume.log &
+# Set amount of time (in seconds) to wait for agent to shutdown gracefully
+# If timeout is reached, then agent is force-killed.
+# FLUME_SHUTDOWN_TIMEOUT=60
+
+flume-ng agent --conf-file <%= @conf_file %> -Dflume.monitoring.type=http -Dflume.monitoring.port=34545 --name <%= @name %> > <%= @log_file %> &
+
+#flume-ng agent --conf-file /etc/flume/conf/flume.conf --name HopsAgent > /var/log/flume/flume.log &
+
+# Turn on http monitoring with JSON/collectd
+# http://engblog.nextdoor.com/post/50507841273/apache-flume-performance-monitoring
+

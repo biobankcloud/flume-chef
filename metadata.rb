@@ -9,9 +9,9 @@ description      "Flume: reliable decoupled shipment of logs and data to HDFS an
 
 depends          "java"
 #depends          "thrift"
-#depends          "apt"
-#depends          "runit"
 depends          "ark"
+depends          "hopagent"
+
 
 recipe           "flume::install",                     "Base configuration for flume"
 # recipe           "flume::master",                      "Configures Flume Master, installs and starts service"
