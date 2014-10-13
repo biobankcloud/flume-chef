@@ -1,6 +1,6 @@
 # Upstart script to start flume, usually found here: /etc/init/flume.conf
 
-env NAME=<%= @role %>
+env NAME=flume-<%= @role %>
 env LOG=<%= @log_file %>
 env USER=<%= node[:flume][:user] %>
 env SCRIPT_FILE=<%= node[:flume][:home_dir] %>/bin/flume-start.sh
@@ -36,6 +36,12 @@ script
   echo $$ > <%= node[:flume][:pid_dir] %>/flume-<%= @role %>.pid
   exec su -s /bin/sh -c 'exec "$0" "$@"' $USER -- $SCRIPT_FILE >> $LOG 2>&1
 end script
+
 post-start script
 echo "app $NAME post-start event" >> $LOG
+end script
+
+pre-stop script
+    rm <%= node[:flume][:pid_dir] %>/flume-<%= @role %>.pid
+    echo "[`date -u +%Y-%m-%dT%T.%3NZ`] (sys) Stopping" >>  <%= @log_file %>
 end script
