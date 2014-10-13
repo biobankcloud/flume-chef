@@ -4,7 +4,7 @@
 # If timeout is reached, then agent is force-killed.
 # FLUME_SHUTDOWN_TIMEOUT=60
 
-flume-ng agent --conf-file <%= @conf_file %> -Dflume.monitoring.type=http -Dflume.monitoring.port=34545 --name <%= @name %> > <%= @log_file %> &
+flume-ng agent --conf-file <%= @conf_file %> -Dflume.monitoring.type=http -Dflume.monitoring.port=34545 --name <%= @name %> > <%= @log_file %> 2>&1 &
 
 #flume-ng agent --conf-file /etc/flume/conf/flume.conf --name HopsAgent > /var/log/flume/flume.log &
 

@@ -1,0 +1,33 @@
+hops.sources = avro
+hops.channels = FileChannel
+hops.sinks = HDFS
+
+
+hops.sources.ngs.type = avro
+hops.sources.ngs.channels = FileChannel
+hops.sources.ngs.serializer = avro_event
+hops.sources.ngs.channel = c1
+hops.sources.ngs.hostname = <%= @ngs_ip %>
+hops.sinks.hdfs.port = <%= node[:flume][:ngs_port] %>
+
+
+HopsAgent.sinks.HDFS.channel = FileChannel
+HopsAgent.sinks.HDFS.type = hdfs
+# %Y-%m-%d-%H/
+HopsAgent.sinks.HDFS.hdfs.path = hdfs://<%= @nn_addr %>/data/<%= node[:flume][:ngs_user] %>/<%= node[:flume][:ngs_project] %>/
+HopsAgent.sinks.HDFS.hdfs.fileType = DataStream
+HopsAgent.sinks.HDFS.hdfs.writeFormat = Text
+HopsAgent.sinks.HDFS.hdfs.batchSize = 1000
+HopsAgent.sinks.HDFS.hdfs.rollSize = 0
+HopsAgent.sinks.HDFS.hdfs.rollCount = 10000
+HopsAgent.sinks.HDFS.hdfs.maxOpenFiles = 10000
+HopsAgent.sinks.HDFS.hdfs.callTimeout = 60000
+hdfs.threadsPoolSize = 10
+HopsAgent.sinks.HDFS.hdfs.kerberosPrincipal = 
+HopsAgent.sinks.HDFS.hdfs.kerberosKeytab = 
+proxyUser = <%= node[:flume][:ngs_user] %>
+serializer = TEXT
+
+HopsAgent.channels.FileChannel.type = file
+HopsAgent.channels.FileChannel.capacity = 10000
+HopsAgent.channels.FileChannel.transactionCapacity = 100

@@ -6,7 +6,9 @@ default[:flume][:cluster_name]        = "hops"
 default[:flume][:version]             = "1.5.0.1"
 default[:flume][:user]                = "flume"
 
-default[:flume][:hdfs_user]           = "flume"
+default[:flume][:ngs_user]            = "flume"
+default[:flume][:ngs_project]         = "flume"
+default[:flume][:ngs_dir]             = "/var/ngs"
 
 default[:flume][:download_url]        = "http://apache.mirrors.spacedump.net/flume/#{node[:flume][:version]}/apache-flume-#{node[:flume][:version]}-bin.tar.gz"
 #
@@ -52,6 +54,9 @@ default[:flume][:multi_agent][:log_dir_prefix] = "/var/log/flume"
 # :external_zookeeper to "true", the recipe will work out which machines are in
 # the zookeeper quorum based on cluster membership; modify
 # node[:discovers][:zookeeper_server] to have it use an external cluster
+
+default[:flume][:num_log_rotations]           = 5
+
 default[:flume][:master][:external_zookeeper] = false
 default[:flume][:master][:zookeeper_port]     = 2181
 
@@ -88,5 +93,10 @@ default[:hopagent][:enabled]                  = "false"
 
 default[:flume][:http_port]                   = 3181
 
-# Can be either agent or master. 
-default[:flume][:role]                        = "agent" 
+default[:flume][:hdfs_port]                   = 51091
+default[:flume][:ngs_port]                    = 51090
+
+# Can be either ngs or hdfs
+default[:flume][:role]                        = "ngs" 
+
+default[:flume][:ngs_delete_policy]           = "immediate"

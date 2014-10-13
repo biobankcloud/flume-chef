@@ -1,0 +1,38 @@
+hops.sources = ngs
+hops.channels = MemChannel
+hops.sinks = hdfs
+
+
+hops.sources.ngs.type = spooldir
+hops.sources.ngs.spoolDir = <%= node[:flume][:ngs_dir] %>/<%= node[:flume][:ngs_project] %>
+hops.sources.ngs.trackerDir = <%= node[:flume][:ngs_dir] %>/tracker
+hops.sources.ngs.channels = MemChannel
+hops.sources.ngs.fileHeader = false
+hops.sources.ngs.deletePolicy = <%= node[:flume][:ngs_delete_policy] %>
+# all files that don't end in .fastq or .fasta
+#hops.sources.ngs.ignorePattern = ^((?!fast).)*$
+hops.sources.ngs.batchSize = 200
+hops.sources.ngs.inputCharset = UTF-8
+
+
+
+
+hops.sinks.hdfs.type = avro
+hops.sinks.hdfs.channels = MemChannel
+hops.sinks.hdfs.serializer = avro_event
+hops.sinks.hdfs.hostname = <%= @hdfs_ip %>
+hops.sinks.hdfs.port = <%= node[:flume][:hdfs_port] %>
+hops.sinks.hdfs.bind = <%= node['ip'] %>
+hops.sinks.hdfs.port = <%= node[:flume][:ngs_port] %>
+threads = <%= @num_cpus %>
+#ipFilter = true
+#ipFilter.rules = allow:ip:<%= @ngs_ip %>,deny:ip:*
+
+#ssl = true
+#keystore = This is the path to a Java keystore file. Required for SSL.
+#keystore-password =  password for the Java keystore. Required for SSL.
+#keystore-type = JKS
+
+HopsAgent.channels.MemChannel.type = memory
+HopsAgent.channels.MemChannel.capacity = 10000
+HopsAgent.channels.MemChannel.transactionCapacity = 100

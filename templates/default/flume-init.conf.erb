@@ -1,19 +1,40 @@
 # Upstart script to start flume, usually found here: /etc/init/flume.conf
 
-env NAME=FlumeNode
-env LOG_FILE=<%= @log_file %>
+env NAME=<%= @role %>
+env LOG=<%= @log_file %>
 env USER=<%= node[:flume][:user] %>
 env SCRIPT_FILE=<%= node[:flume][:home_dir] %>/bin/flume-start.sh
 start on runlevel [2345] stop on runlevel [016]
 # Respawn in case of a crash, with default parameters
 # respawn
 script
-  # Make sure logfile exists and can be written by the user we drop privileges to
-  touch $LOG_FILE
-  chown $USER:$USER $LOG_FILE
+  # Rotate logfile up to N times
+  if [ -f $LOG ] ; then
+    CNT=<%= node[:flume][:num_log_rotations] %>
+    let P_CNT=CNT-1
+    if [ -f ${LOG}.5 ] ; then
+      rm ${LOG}.5
+    fi
+    
+    # Renames logs .1 trough .N
+    while [[ $CNT -ne 1 ]] ; do
+      if [ -f ${LOG}.${P_CNT} ] ; then
+        mv ${LOG}.${P_CNT} ${LOG}.${CNT}
+      fi
+      let CNT=CNT-1
+      let P_CNT=P_CNT-1
+    done
+  
+    # Renames current log to .1
+    mv $LOG ${LOG}.1
+  fi
+
+  # Make sure logfile can be written by the user we drop privileges to
+  touch $LOG
+  chown $USER:$USER $LOG
   # recommended approach in case of su/sudo usage so that service does not fork
-  exec su -s /bin/sh -c 'exec "$0" "$@"' $USER -- $SCRIPT_FILE >> $LOG_FILE 2>&1
+  exec su -s /bin/sh -c 'exec "$0" "$@"' $USER -- $SCRIPT_FILE >> $LOG 2>&1
 end script
 post-start script
-echo "app $NAME post-start event" >> $LOG_FILE
+echo "app $NAME post-start event" >> $LOG
 end script
