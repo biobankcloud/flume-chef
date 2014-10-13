@@ -60,6 +60,8 @@ Collectd Configuration File Example:
     LoadPlugin "exec"
     <Plugin exec>
         Exec "flume" "/usr/local/flume/bin/flume.py" "-p" "flume" "-u" "http://localhost:41414/metrics"
+
+        Exec "flume" "/usr/local/flume/bin/flume.py" "-p" "flume" "-u" "http://localhost:<%= node[:flume][:http_port] %>/metrics"
     </Plugin>
 """
 

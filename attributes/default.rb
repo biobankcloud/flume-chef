@@ -5,6 +5,7 @@ default[:flume][:cluster_name]        = "hops"
 
 default[:flume][:version]             = "1.5.0.1"
 default[:flume][:user]                = "flume"
+default[:flume][:group]               = "flume"
 
 default[:flume][:ngs_user]            = "flume"
 default[:flume][:ngs_project]         = "flume"

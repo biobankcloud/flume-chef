@@ -13,4 +13,26 @@ suites:
   - name: default
     run_list:
       - recipe[flume::install]
+      - recipe[flume::ngs]
+      - recipe[flume::test-ngs]
     attributes:
+         flume:
+            ngs:
+                private_ips: ["10.0.2.15"]
+                public_ips: ["10.0.2.15"]
+            hdfs:
+                private_ips: ["10.0.2.15"]
+                public_ips: ["10.0.2.15"]
+            private_ips: ["10.0.2.15"]
+            public_ips: ["10.0.2.15"]
+         hadoop:
+            nn:
+                port: 50070
+                private_ips: ["10.0.2.15"]
+                public_ips: ["10.0.2.15"]
+         hopagent:
+            private_ips: ["10.0.2.15"]
+            public_ips: ["10.0.2.15"]
+         private_ips: ["10.0.2.15"]
+         public_ips: ["10.0.2.15"]
+         vagrant: "enabled"

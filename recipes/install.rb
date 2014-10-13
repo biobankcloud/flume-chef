@@ -25,6 +25,8 @@ when "rhel"
   end
 end
 
+node.default['java']['jdk_version'] = 7
+node.default['java']['install_flavor'] = "openjdk"
 include_recipe "java"
 
 node.default['ark']['apache_mirror'] = node[:flume][:download_url]
@@ -39,7 +41,7 @@ end
 ark 'flume' do
    url node[:flume][:download_url]
    version node[:flume][:version]
-   path "/usr/local/"
+   path node[:flume][:base_dir]
    home_dir node[:flume][:home_dir] 
 #   checksum  ''
    append_env_path true
@@ -55,20 +57,12 @@ directory node[:flume][:conf_dir] do
 end
 
 
-template "#{node[:flume][:conf_dir]}/flume-env.sh" do
-  source "flume-env.sh.erb"
-  owner "root"
-  group "root"
-  mode 0755
-end
-
- template "/etc/default/flume-ng-agent" do
-   source "flume-ng-agent.erb"
-   owner "root"
-   group "root"
-   mode 0755
+ template "#{node[:flume][:conf_dir]}/flume-env.sh" do
+   source "flume-env.sh.erb"
+   owner node[:flume][:user]
+   group node[:flume][:user]
+   mode 0750
  end
-
 
 # Create flume home_dir
 link node[:flume][:home_dir] do
