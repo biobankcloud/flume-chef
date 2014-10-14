@@ -26,7 +26,7 @@ template "#{node[:flume][:home_dir]}/bin/flume-start.sh" do
   mode "0750"
   variables({
               :log_file => :log_file,
-              :conf_file => "#{node[:flume][:conf_dir]}/flume-hdfs.cnf",
+              :conf_file => "#{node[:flume][:conf_dir]}/flume-hdfs.conf",
               :name => node[:flume][:cluster_name],
               :hdfs_ip => hdfs_ip,
               :nn_addr => "#{nn_ip}:#{node[:hadoop][:nn][:port]}"

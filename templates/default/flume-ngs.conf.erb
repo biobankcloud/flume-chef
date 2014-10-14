@@ -3,8 +3,10 @@ hops.channels = c1
 hops.sinks = net1
 
 hops.sources.ngs.type = spooldir
-hops.sources.ngs.spoolDir = <%= node[:flume][:ngs_dir] %>/<%= node[:flume][:ngs_project] %>
-hops.sources.ngs.trackerDir = <%= node[:flume][:ngs_dir] %>/tracker
+hops.sources.ngs.spoolDir = <%= node[:flume][:ngs_dir] %>
+#/<%= node[:flume][:ngs_project] %>
+hops.sources.ngs.trackerDir = <%= node[:flume][:ngs_dir] %>
+#/tracker
 hops.sources.ngs.channels = c1
 hops.sources.ngs.fileHeader = false
 hops.sources.ngs.deletePolicy = <%= node[:flume][:ngs_delete_policy] %>
@@ -22,7 +24,7 @@ hops.channels.c1.transactionCapacity = 100
 hops.sinks.net1.type = avro
 hops.sinks.net1.channels = c1
 hops.sinks.net1.serializer = net1_event
-hops.sinks.net1.hostname = <%= @avro_ip %>
+hops.sinks.net1.hostname = <%= @hdfs_ip %>
 hops.sinks.net1.port = <%= node[:flume][:hdfs_port] %>
 #hops.sinks.net1.threads = <%= @num_cpus %>
 #hops.sinks.net1.ipFilter = true

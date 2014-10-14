@@ -17,7 +17,6 @@ template "#{node[:flume][:conf_dir]}/flume-ngs.conf" do
   variables({
               :log_file => log_file,
               :hdfs_ip => hdfs_ip,
-              :ngs_ip => ngs_ip,
               :num_cpus => num_cpus,
             })
 end
@@ -28,8 +27,19 @@ template "#{node[:flume][:home_dir]}/bin/flume-start.sh" do
   group node[:flume][:group]
   mode "0750"
   variables({
-              :conf_file => "#{node[:flume][:conf_dir]}/flume-ngs.cnf",
+              :conf_file => "#{node[:flume][:conf_dir]}/flume.conf",
               :name => node[:flume][:cluster_name]
             })
 end
+
+# template "#{node[:flume][:home_dir]}/bin/flume-start.sh" do
+#   source "flume-start.sh.erb"
+#   owner node[:flume][:user]
+#   group node[:flume][:group]
+#   mode "0750"
+#   variables({
+#               :conf_file => "#{node[:flume][:conf_dir]}/flume-ngs.cnf",
+#               :name => node[:flume][:cluster_name]
+#             })
+# end
 

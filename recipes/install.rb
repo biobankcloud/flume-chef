@@ -48,14 +48,16 @@ ark 'flume' do
    owner node[:flume][:user]
 end
 
-directory node[:flume][:conf_dir] do
-  owner node[:flume][:user]
-  group node[:flume][:user]
-  mode "750"
-  action :create
-  recursive true
-end
 
+for d in [node[:flume][:conf_dir],node[:flume][:log_dir],node[:flume][:pid_dir],node[:flume][:ngs_dir]]
+  directory d do
+    owner node[:flume][:user]
+    group node[:flume][:user]
+    mode "750"
+    action :create
+    recursive true
+  end
+end
 
  template "#{node[:flume][:conf_dir]}/flume-env.sh" do
    source "flume-env.sh.erb"
@@ -64,10 +66,24 @@ end
    mode 0750
  end
 
+ template "#{node[:flume][:conf_dir]}/flume.conf" do
+   source "flume.conf.erb"
+   owner node[:flume][:user]
+   group node[:flume][:user]
+   mode 0750
+ end
+
+ template "#{node[:flume][:conf_dir]}/log4j.properties" do
+   source "log4j.properties.erb"
+   owner node[:flume][:user]
+   group node[:flume][:user]
+   mode 0750
+ end
+
+
 # Create flume home_dir
 link node[:flume][:home_dir] do
   owner node[:flume][:user]
   group node[:flume][:group]
   to node[:flume][:version_dir]
 end
-

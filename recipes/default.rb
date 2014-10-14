@@ -1,9 +1,23 @@
 role = node[:flume][:role]
 
-service "flume-#{role}" do
-    provider Chef::Provider::Service::Upstart
-    supports :status => true, :restart => true,  :start => true, :stop => true
+# service "flume-#{role}" do
+#     provider Chef::Provider::Service::Upstart
+#     supports :status => true, :start => true, :stop => true
+# end
+
+
+template "/etc/init.d/flume-#{role}" do
+  source "flume-init.erb"
+  owner node[:flume][:user]
+  group node[:flume][:user]
+  mode "0751"
+  variables({
+              :role => role
+            })
+#  notifies :enable, "service[flume-#{role}]"
+#  notifies :start, "service[flume-#{role}]"
 end
+
 
 template "/etc/init/flume-#{role}.conf" do
   source "flume-upstart.conf.erb"
@@ -13,8 +27,8 @@ template "/etc/init/flume-#{role}.conf" do
   variables({
               :role => role
             })
-  notifies :enable, "service[flume-#{role}]"
-  notifies :start, "service[flume-#{role}]"
+#  notifies :enable, "service[flume-#{role}]"
+#  notifies :start, "service[flume-#{role}]"
 end
 
 template "#{node[:flume][:home_dir]}/bin/flume-collectd.py" do
