@@ -2,11 +2,10 @@ role = node[:flume][:role]
 
 service "flume-#{role}" do
     provider Chef::Provider::Service::Upstart
-    supports :status => true, :restart => true
+    supports :status => true, :restart => true,  :start => true, :stop => true
 end
 
-template "flume-#{role}.conf" do
-  path "/etc/init/flume.conf"
+template "/etc/init/flume-#{role}.conf" do
   source "flume-upstart.conf.erb"
   owner node[:flume][:user]
   group node[:flume][:user]

@@ -6,7 +6,9 @@
 
 #export JAVA_HOME=<%= node[:java][:java_home] %>
 
-<%= node[:flume][:home_dir] %>/bin/flume-ng agent --conf-file <%= @conf_file %> -Dflume.monitoring.type=http -Dflume.monitoring.port=<%= node[:flume][:http_port] %> --name <%= @name %> --conf <%= node[:flume][:conf_dir] %> 
+cd <%= node[:flume][:home_dir] %>
+<%= node[:flume][:home_dir] %>/bin/flume-ng agent -c <%= node[:flume][:conf_dir] %>  -f <%= @conf_file %> --name <%= @name %> 
+# -Dflume.monitoring.type=http -Dflume.monitoring.port=<%= node[:flume][:http_port] %> 
 #2>&1 &
 
 #flume-ng agent --conf-file /etc/flume/conf/flume.conf --name HopsAgent > /var/log/flume/flume.log &
