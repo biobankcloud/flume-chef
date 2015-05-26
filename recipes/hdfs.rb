@@ -33,17 +33,16 @@ template "#{node[:flume][:home_dir]}/bin/flume-start.sh" do
             })
 end
 
-
-script "Setting up environment" do
-  interpreter "bash"
-#  user node[:hdfs][:user]
-  user "root"
-  code <<-EOH
-#  sudo -u hdfs hadoop fs -mkdir /user/node[:flume_hdfs][:user]
-#  sudo -u hdfs hadoop fs -chown node[:flume_hdfs][:user]:node[:flume_hdfs][:user] /user/node[:flume_hdfs][:user]
-#  sudo -u hdfs hadoop fs -chmod -R 770 /user/node[:flume_hdfs][:user]
-  EOH
-#  not_if { "hadoop dfs -ls /user | egrep node[:flume_hdfs][:user]" }
+for d in %w{ /user/#{node[:flume][:dest_project]}_#{node[:flume][:dest_dataset]} }
+   Chef::Log.info "Creating hdfs directory: #{d}"
+   hadoop_hdfs_directory d do
+    action :create
+    owner node[:flume][:ngs_user]
+    group 
+    mode "1777"
+    not_if ". #{node[:hadoop][:home]}/sbin/set-env.sh && #{node[:hadoop][:home]}/bin/hdfs dfs -test -d #{d}"
+   end
 end
+
 
 

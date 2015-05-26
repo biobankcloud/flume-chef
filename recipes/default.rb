@@ -40,8 +40,8 @@ end
 
 log_file = "#{node[:flume][:logs_dir]}/flume-#{node[:flume][:user]}-#{role}-#{node['hostname']}.log"
 
-if node[:hopagent][:enabled].eql? "true"
-  hopagent_config "flume-#{role}" do
+if node[:kagent][:enabled].eql? "true"
+  kagent_config "flume-#{role}" do
     service "node[:flume][:cluster_name]"
     start_script "#{node[:flume][:home]}/bin/root-start-flume-#{role}.sh"
     stop_script "#{node[:flume][:home]}/bin/root-stop-flume-#{role}.sh"

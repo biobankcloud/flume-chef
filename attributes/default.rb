@@ -3,7 +3,7 @@
 #belongs to.
 default[:flume][:cluster_name]        = "hops"
 
-default[:flume][:version]             = "1.5.0.1"
+default[:flume][:version]             = "1.5.2"
 default[:flume][:user]                = "flume"
 default[:flume][:group]               = "flume"
 
@@ -12,17 +12,16 @@ default[:flume][:ngs_project]         = "flume"
 default[:flume][:ngs_dir]             = "/var/ngs"
 
 default[:flume][:download_url]        = "http://apache.mirrors.spacedump.net/flume/#{node[:flume][:version]}/apache-flume-#{node[:flume][:version]}-bin.tar.gz"
-#
+
 # Locations
 #
-
 default[:flume][:base_dir]            = "/usr/local"
 default[:flume][:version_dir]         = "/usr/local/flume-#{node[:flume][:version]}"
 default[:flume][:home_dir]            = "/usr/local/flume"
 default[:flume][:conf_dir]            = "/etc/flume"
 default[:flume][:pid_dir]             = "/var/run/flume"
 default[:flume][:log_dir]             = "/var/log/flume"
-
+default[:flume][:data_dir]            = "/var/lib/flume/db/flume"
 
 default[:flume][:agent ][:file_limit] = 65536
 default[:flume][:master][:file_limit] = 65536
@@ -56,6 +55,8 @@ default[:flume][:multi_agent][:log_dir_prefix] = "/var/log/flume"
 # the zookeeper quorum based on cluster membership; modify
 # node[:discovers][:zookeeper_server] to have it use an external cluster
 
+
+
 default[:flume][:num_log_rotations]           = 5
 
 default[:flume][:master][:external_zookeeper] = false
@@ -67,6 +68,7 @@ default[:flume][:zookeeper][:port]            = 3181
 default[:flume][:uopts]                       = ""
 
 default[:flume][:plugins]                     = {}
+default[:flume][:plugins_str]                 = ""
 
 default[:flume][:jars][:jruby_jar_version]    = "1.0.0"
 
@@ -90,8 +92,6 @@ default[:flume][:max_event_size]              = nil
 # or any other Codec Hadoop is aware of
 default[:flume][:hdfs_output]                 = "None"
 
-default[:hopagent][:enabled]                  = "false"
-
 default[:flume][:http_port]                   = 3181
 
 default[:flume][:hdfs_port]                   = 51091
@@ -101,3 +101,19 @@ default[:flume][:ngs_port]                    = 51090
 default[:flume][:role]                        = "ngs" 
 
 default[:flume][:ngs_delete_policy]           = "immediate"
+
+
+#
+# Params for copying data to HopsWorks
+#
+default[:flume][:dest_project]                = ""
+
+default[:flume][:dest_dataset]                = ""
+
+default[:flume][:hdfs][:user]                 = "hdfs"
+
+default[:flume][:num_test_files]              = 1000
+
+default[:flume][:test_file_size_mb]           = 64
+
+default[:kagent][:enabled]                    = "false"

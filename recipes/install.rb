@@ -1,14 +1,18 @@
 case node[:platform_family]
 when "debian"
-  bash "apt_update_install_build_tools" do
-    user "root"
-    code <<-EOF
-   apt-get update -y
-#   DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
-   apt-get install build-essential -y
-   apt-get install libssl-dev -y
- EOF
+#   bash "apt_update_install_build_tools" do
+#     user "root"
+#     code <<-EOF
+#    apt-get update -y
+# #   DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+#    apt-get install build-essential -y
+#    apt-get install libssl-dev -y
+#  EOF
+#   end
+  package "libssl-dev" do
+    action :install
   end
+
 when "rhel"
 # gcc, gcc-c++, kernel-devel are the equivalent of "build-essential" from apt.
   package "gcc" do
@@ -32,10 +36,17 @@ include_recipe "java"
 node.default['ark']['apache_mirror'] = node[:flume][:download_url]
 node.default['ark']['prefix_root'] = node[:flume][:base_dir]
 
-user node[:flume][:user] do
+group node[:flume][:group] do
   action :create
+end
+
+user node[:flume][:user] do
+  supports :manage_home => true
+  action :create
+  home "/home/#{node[:flume][:user]}"
   system true
   shell "/bin/bash"
+  not_if "getent passwd #{node[:flume]['user']}"
 end
 
 ark 'flume' do

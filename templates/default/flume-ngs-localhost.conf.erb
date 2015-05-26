@@ -1,0 +1,37 @@
+hops.sources = ngs
+hops.channels = c1
+hops.sinks = net1
+
+hops.sources.ngs.type = spooldir
+hops.sources.ngs.spoolDir = <%= node[:flume][:ngs_dir] %>
+#/<%= node[:flume][:ngs_project] %>
+hops.sources.ngs.trackerDir = <%= node[:flume][:ngs_dir] %>
+#/tracker
+hops.sources.ngs.channels = c1
+hops.sources.ngs.fileHeader = false
+hops.sources.ngs.deletePolicy = <%= node[:flume][:ngs_delete_policy] %>
+# all files that don't end in .fastq or .fasta
+#hops.sources.ngs.ignorePattern = ^((?!fast).)*$
+hops.sources.ngs.batchSize = 100
+hops.sources.ngs.inputCharset = UTF-8
+
+
+hops.channels.c1.type = memory
+hops.channels.c1.capacity = 10000
+hops.channels.c1.transactionCapacity = 1000000
+
+
+hops.sinks.flumeHDFS.type = hdfs
+hops.sinks.flumeHDFS.hdfs.path = hdfs://<%= @nn_ip %>/projects/<%= node[:flume][:dest_project] %>/<%= node[:flume][:dest_dataset] %>
+hops.sinks.flumeHDFS.hdfs.fileType = DataStream
+# Write format can be text or writable
+hops.sinks.flumeHDFS.hdfs.writeFormat = Text
+# use a single fastq file at a time
+agent.sinks.flumeHDFS.hdfs.maxOpenFiles = 1
+
+hops.sinks.flumeHDFS.hdfs.rollCount = 0
+hops.sinks.flumeHDFS.hdfs.rollInterval = 0
+# Never roll the file, based on file size
+hops.sinks.flumeHDFS.hdfs.rollSize = 0
+# number of events before the file is flushed to HDFS
+hops.sinks.flumeHDFS.hdfs.batchSize = 100

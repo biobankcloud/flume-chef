@@ -1,0 +1,12 @@
+dependencies: 
+  - recipe: flume::install
+  - recipe: flume
+    local:  
+      - flume::install
+  - recipe: flume::test-ngs
+    local:  
+      - flume::install
+  - recipe: flume::test-ngs-localhost
+    local:  
+      - flume::install
+
