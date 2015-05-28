@@ -1,0 +1,13 @@
+hops.sources = tail
+hops.channels = memoryChannel
+hops.sinks = loggerSink
+
+hops.sources.tail.type = exec
+hops.sources.tail.command = tail -f /usr/local/flume/bin/flume-ng
+hops.sources.tail.channels = memoryChannel
+
+hops.sinks.loggerSink.channel = memoryChannel
+hops.sinks.loggerSink.type = logger
+
+hops.channels.memoryChannel.type = memory
+hops.channels.memoryChannel.capacity = 100
