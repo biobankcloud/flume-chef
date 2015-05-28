@@ -1,3 +1,5 @@
+
+
 flume_test "fastq" do
   owner "#{node[:flume][:dest_project]}_#{node[:flume][:hdfs][:user]}"
   group "#{node[:flume][:dest_project]}_#{node[:flume][:dest_dataset]}"

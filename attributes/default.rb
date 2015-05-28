@@ -117,3 +117,5 @@ default[:flume][:num_test_files]              = 1000
 default[:flume][:test_file_size_mb]           = 64
 
 default[:kagent][:enabled]                    = "false"
+
+default[:flume][:maxheap_mbs]                 = 1024

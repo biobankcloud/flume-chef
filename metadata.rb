@@ -142,3 +142,7 @@ attribute "flume/role",
           :type => 'string',
           :required => "optional"
 
+attribute "flume/maxheap_mbs",
+          :description           => "Flume Agent jvm max heap size",
+          :type => 'string',
+          :required => "optional"
