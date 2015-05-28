@@ -65,3 +65,16 @@ template "#{node[:flume][:home_dir]}/bin/root-stop-flume-#{role}.sh" do
   owner "root"
   mode "0751"
 end
+
+nn_ip = private_recipe_ip('hadoop', 'nn')
+
+template "#{node[:flume][:conf_dir]}/flume.conf" do
+   source "flume-#{role}.conf.erb"
+   owner node[:flume][:user]
+   group node[:flume][:user]
+   mode 0750
+  variables({
+              :nn_addr => "#{nn_ip}:#{node[:hadoop][:nn][:port]}",
+              :hdfs_ip => "#{nn_ip}"
+            })
+ end

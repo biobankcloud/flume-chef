@@ -1,6 +1,8 @@
 actions :local_create, :remote_create
 
-attribute :source_dir, :kind_of => String, :default => "/tmp"
+attribute :name, :kind_of => String, :name_attribute => true
+
+attribute :source_dir, :kind_of => String, :default => "/tmp/ngs"
 
 attribute :owner, :kind_of => String, :default => "hdfs"
 

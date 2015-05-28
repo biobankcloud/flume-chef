@@ -1,7 +1,7 @@
 node.default[:flume][:role] = "ngs"
 include_recipe "flume::default"
 
-log_file = "#{node[:flume][:log_dir]}/ngs/flume-#{node['hostname']}.log"
+log_file = "#{node[:flume][:log_dir]}/flume-ngs-#{node['hostname']}.log"
 
 hdfs_ip = private_recipe_ip('flume', 'hdfs')
 ngs_ip = private_recipe_ip('flume', 'ngs')

@@ -26,3 +26,7 @@ JAVA_OPTS="-Xms50m -Xmx200m -Dcom.sun.management.jmxremote -Djava.net.preferIPv4
 
 # Note that the Flume conf directory is always included in the classpath.
 #FLUME_CLASSPATH="<%= node[:flume][:home_dir] %>/lib/flume-sources-1.0-SNAPSHOT.jar"
+
+HADOOP_HOME=<%= node[:hadoop][:dir] %>/hadoop
+HADOOP_CONF_DIR=<%= node[:hadoop][:conf_dir] %>
+

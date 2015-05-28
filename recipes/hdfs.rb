@@ -36,7 +36,7 @@ end
 for d in %w{ /user/#{node[:flume][:dest_project]}_#{node[:flume][:dest_dataset]} }
    Chef::Log.info "Creating hdfs directory: #{d}"
    hadoop_hdfs_directory d do
-    action :create
+    action :create_as_superuser
     owner node[:flume][:ngs_user]
     group 
     mode "1777"

@@ -13,6 +13,8 @@ depends          "ark"
 #depends          "kagent"
 depends          "hadoop"
 
+depends          "magic_shell"
+
 recipe           "flume::install",                     "Base configuration for flume"
 # recipe           "flume::master",                      "Configures Flume Master, installs and starts service"
 # recipe           "flume::make_dirs",                   "Ties directories to available volumes"
@@ -128,6 +130,15 @@ attribute "flume/num_test_files",
 
 attribute "flume/hdfs/user",
           :description           => "HDFS Username to use when copying to the HopsWorks project/dataset",
+          :type => 'string',
+          :required => "optional"
+
+attribute "flume/role",
+          :description           => "Flume roles: agent, hdfs, localhost",
+#          :choice => \[
+#             'agent',
+#             'hdfs',
+#             'localhost'\],
           :type => 'string',
           :required => "optional"
 

@@ -97,7 +97,7 @@ default[:flume][:http_port]                   = 3181
 default[:flume][:hdfs_port]                   = 51091
 default[:flume][:ngs_port]                    = 51090
 
-# Can be either ngs or hdfs
+# Possible values: ngs, hdfs, localhost
 default[:flume][:role]                        = "ngs" 
 
 default[:flume][:ngs_delete_policy]           = "immediate"

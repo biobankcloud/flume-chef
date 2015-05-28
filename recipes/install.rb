@@ -36,10 +36,6 @@ include_recipe "java"
 node.default['ark']['apache_mirror'] = node[:flume][:download_url]
 node.default['ark']['prefix_root'] = node[:flume][:base_dir]
 
-group node[:flume][:group] do
-  action :create
-end
-
 user node[:flume][:user] do
   supports :manage_home => true
   action :create
@@ -77,12 +73,6 @@ end
    mode 0750
  end
 
- template "#{node[:flume][:conf_dir]}/flume.conf" do
-   source "flume.conf.erb"
-   owner node[:flume][:user]
-   group node[:flume][:user]
-   mode 0750
- end
 
  template "#{node[:flume][:conf_dir]}/log4j.properties" do
    source "log4j.properties.erb"
@@ -98,3 +88,16 @@ link node[:flume][:home_dir] do
   group node[:flume][:group]
   to node[:flume][:version_dir]
 end
+
+magic_shell_environment 'HADOOP_HOME' do 
+    value node[:hadoop][:home]
+end 
+
+magic_shell_environment 'HADOOP_CONF_DIR' do 
+    value node[:hadoop][:conf_dir]
+end 
+
+
+magic_shell_environment 'PATH' do 
+    value "$PATH:" + node[:hadoop][:home] + '/bin'
+end 
