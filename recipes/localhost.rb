@@ -30,13 +30,13 @@ template "#{node[:flume][:home_dir]}/bin/flume-start.sh" do
 end
 
 flume_test "fastq" do
-  owner "#{node[:flume][:dest_project]}_#{node[:flume][:hdfs][:user]}"
-  group "#{node[:flume][:dest_project]}_#{node[:flume][:dest_dataset]}"
-  dest_dir "/projects/#{node[:flume][:dest_project]}/#{node[:flume][:dest_dataset]}"
+  owner "#{node[:flume][:project]}_#{node[:flume][:hdfs][:user]}"
+  group "#{node[:flume][:project]}_#{node[:flume][:dataset]}"
+  dest_dir "/projects/#{node[:flume][:project]}/#{node[:flume][:dataset]}"
   action :local_create
 end
 
-for d in %w{ /projects/#{node[:flume][:dest_project]}_#{node[:flume][:dest_dataset]} }
+for d in %w{ "/projects/#{node[:flume][:project]}_#{node[:flume][:dataset]}" }
    Chef::Log.info "Creating hdfs directory: #{d}"
    hadoop_hdfs_directory d do
     action :create_as_superuser

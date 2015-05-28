@@ -106,9 +106,9 @@ default[:flume][:ngs_delete_policy]           = "immediate"
 #
 # Params for copying data to HopsWorks
 #
-default[:flume][:dest_project]                = ""
+default[:flume][:project]                     = ""
 
-default[:flume][:dest_dataset]                = ""
+default[:flume][:dataset]                     = ""
 
 default[:flume][:hdfs][:user]                 = "hdfs"
 

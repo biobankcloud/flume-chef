@@ -33,7 +33,7 @@ template "#{node[:flume][:home_dir]}/bin/flume-start.sh" do
             })
 end
 
-for d in %w{ /projects/#{node[:flume][:dest_project]}_#{node[:flume][:dest_dataset]} }
+for d in %w{ "/projects/#{node[:flume][:project]}_#{node[:flume][:dataset]}" }
    Chef::Log.info "Creating hdfs directory: #{d}"
    hadoop_hdfs_directory d do
     action :create_as_superuser
