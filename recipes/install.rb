@@ -45,6 +45,14 @@ user node[:flume][:user] do
   not_if "getent passwd #{node[:flume]['user']}"
 end
 
+group node[:hadoop][:group] do
+  action :modify
+  members ["#{node[:flume][:user]}"]
+  append true
+end
+
+
+
 ark 'flume' do
    url node[:flume][:download_url]
    version node[:flume][:version]

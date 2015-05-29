@@ -18,7 +18,7 @@ default[:flume][:download_url]        = "http://apache.mirrors.spacedump.net/flu
 default[:flume][:base_dir]            = "/usr/local"
 default[:flume][:version_dir]         = "/usr/local/flume-#{node[:flume][:version]}"
 default[:flume][:home_dir]            = "/usr/local/flume"
-default[:flume][:conf_dir]            = "/etc/flume"
+default[:flume][:conf_dir]            = "#{node[:flume][:home_dir]}/conf"
 default[:flume][:pid_dir]             = "/var/run/flume"
 default[:flume][:log_dir]             = "/var/log/flume"
 default[:flume][:data_dir]            = "/var/lib/flume/db/flume"
@@ -32,9 +32,6 @@ default[:flume][:collector]           = Mash.new
 # these are set by the recipes
 default[:flume][:exported_jars ]      = []
 default[:flume][:exported_confs]      = []
-
-# install_from_release
-#default[:flume][:release_url]         = "https://github.com/downloads/biobankcloud/flume-chef/flume-chef-distribution-#{node[:flume][:version]}-SNAPSHOT-bin.tar.gz"
 
 #
 # Services

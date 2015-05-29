@@ -1,41 +1,46 @@
 hops.sources = ngs
 hops.channels = c1
-hops.sinks = hdfs-agent
+hops.sinks = k1
 
 hops.sources.ngs.type = spooldir
 hops.sources.ngs.spoolDir = <%= node[:flume][:ngs_dir] %>
-hops.sources.ngs.trackerDir = <%= node[:flume][:ngs_dir] %>
-#/tracker
 hops.sources.ngs.channels = c1
-hops.sources.ngs.fileHeader = false
-hops.sources.ngs.deletePolicy = <%= node[:flume][:ngs_delete_policy] %>
+
+#hops.sources.ngs.trackerDir = <%= node[:flume][:ngs_dir] %>
+#hops.sources.ngs.fileHeader = false
+#hops.sources.ngs.deletePolicy = <%= node[:flume][:ngs_delete_policy] %>
 # all files that don't end in .fastq or .fasta
 #hops.sources.ngs.ignorePattern = ^((?!fast).)*$
-hops.sources.ngs.batchSize = 10000
-hops.sources.ngs.inputCharset = UTF-8
+#hops.sources.ngs.batchSize = 10000
+#hops.sources.ngs.inputCharset = UTF-8
+
+
+hops.sinks.k1.type = hdfs
+hops.sinks.k1.channels = c1
+hops.sinks.k1.hdfs.path = hdfs://<%= @nn_addr %>/projects/<%= node[:flume][:project] %>/<%= node[:flume][:dataset] %>
+# %y-%m-%d/%H%M/%S
+#hops.sinks.k1.hdfs.path = /projects/<%= node[:flume][:project] %>/<%= node[:flume][:dataset] %>/%y-%m-%d
+#hops.sinks.k1.hdfs.round = true
+#hops.sinks.k1.hdfs.roundValue = 10
+#hops.sinks.k1.hdfs.roundUnit = minute
+#hops.sinks.k1.hdfs.fileType = DataStream
+# Write format can be text or writable
+#hops.sinks.k1.hdfs.writeFormat = Text
+# use a single fastq file at a time
+#hops.sinks.k1.hdfs.maxOpenFiles = 2
+#hops.sinks.k1.hdfs.rollCount = 0
+#hops.sinks.k1.hdfs.rollInterval = 0
+# Never roll the file, based on file size
+#hops.sinks.k1.hdfs.rollSize = 0
+# number of events before the file is flushed to HDFS
+#hops.sinks.k1.hdfs.batchSize = 10000
+#hops.sinks.k1.hdfs.idleTimeout = 0
+#hops.sinks.k1.hdfs.filePrefix = bbc
+
 
 
 hops.channels.c1.type = memory
-hops.channels.c1.capacity = 100000
-hops.channels.c1.transactionCapacity = 10000
+hops.channels.c1.capacity = 1000
+hops.channels.c1.transactionCapacity = 100
 # ~100 MB of capacity
-hops.channels.c1.byteCapacity = 100013312 
-
-
-hops.sinks.hdfs-agent.type = hdfs
-hops.sinks.hdfs-agent.hdfs.path = hdfs://<%= @nn_addr %>/projects/<%= node[:flume][:project] %>/<%= node[:flume][:dataset] %>
-hops.sinks.hdfs-agent.hdfs.fileType = DataStream
-# Write format can be text or writable
-hops.sinks.hdfs-agent.hdfs.writeFormat = Text
-# use a single fastq file at a time
-hops.sinks.hdfs-agent.hdfs.maxOpenFiles = 1
-
-hops.sinks.hdfs-agent.hdfs.rollCount = 0
-hops.sinks.hdfs-agent.hdfs.rollInterval = 0
-# Never roll the file, based on file size
-hops.sinks.hdfs-agent.hdfs.rollSize = 0
-# number of events before the file is flushed to HDFS
-hops.sinks.hdfs-agent.hdfs.batchSize = 10000
-hops.sinks.hdfs-agent.hdfs.idleTimeout = 0
-
-hops.sinks.hdfs-agent.channels = c1
+#hops.channels.c1.byteCapacity = 100013312 

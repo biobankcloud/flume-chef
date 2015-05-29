@@ -36,13 +36,11 @@ flume_test "fastq" do
   action :local_create
 end
 
-for d in %w{ "/projects/#{node[:flume][:project]}_#{node[:flume][:dataset]}" }
-   Chef::Log.info "Creating hdfs directory: #{d}"
-   hadoop_hdfs_directory d do
+d="/projects/#{node[:flume][:project]}/#{node[:flume][:dataset]}"
+   hadoop_hdfs_directory "#{d}" do
     action :create_as_superuser
     owner node[:flume][:ngs_user]
     group 
     mode "1777"
     not_if ". #{node[:hadoop][:home]}/sbin/set-env.sh && #{node[:hadoop][:home]}/bin/hdfs dfs -test -d #{d}"
    end
-end

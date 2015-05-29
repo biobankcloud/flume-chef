@@ -1,5 +1,6 @@
 #!/bin/bash
 
+set -e
 # Set amount of time (in seconds) to wait for agent to shutdown gracefully
 # If timeout is reached, then agent is force-killed.
 # FLUME_SHUTDOWN_TIMEOUT=60
@@ -10,7 +11,7 @@ export HADOOP_HOME=<%= node[:hadoop][:dir] %>/hadoop
 export HADOOP_CONF_DIR=<%= node[:hadoop][:conf_dir] %>
 export PATH=<%= node[:hadoop][:dir] %>/hadoop/bin:$PATH
 
-. #{node[:hadoop][:dir]}/hadoop/sbin/set-env.sh
+. <%= node[:hadoop][:dir] %>/hadoop/sbin/set-env.sh
 <%= node[:flume][:home_dir] %>/bin/flume-ng agent -c <%= node[:flume][:conf_dir] %>  -f <%= @conf_file %> -n hops -Dflume.root.logger=DEBUG,console
 # cd <%= node[:flume][:home_dir] %>
 #<%= node[:flume][:home_dir] %>/bin/flume-ng agent -c <%= node[:flume][:conf_dir] %>  -f <%= @conf_file %> --name <%= @name %> -Dflume.root.logger=DEBUG,console
