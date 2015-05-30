@@ -1,46 +1,53 @@
-hops.sources = ngs
-hops.channels = c1
-hops.sinks = k1
+a1.sources = r1
+a1.channels = c1
+a1.sinks = k1
 
-hops.sources.ngs.type = spooldir
-hops.sources.ngs.spoolDir = <%= node[:flume][:ngs_dir] %>
-hops.sources.ngs.channels = c1
-
-#hops.sources.ngs.trackerDir = <%= node[:flume][:ngs_dir] %>
-#hops.sources.ngs.fileHeader = false
-#hops.sources.ngs.deletePolicy = <%= node[:flume][:ngs_delete_policy] %>
+a1.sources.r1.type = spooldir
+a1.sources.r1.spoolDir = <%= node[:flume][:ngs_dir] %>
+a1.sources.r1.channels = c1
+a1.sources.r1.deserializer = org.apache.flume.sink.solr.morphline.BlobDeserializer$Builder
+a1.sources.r1.deserializer.maxBlobLength = 2000000000
+a1.sources.r1.batchSize = 1
+#a1.sources.r1.inputCharset = UTF-8
+#a1.sources.r1.trackerDir = <%= node[:flume][:ngs_dir] %>
+#a1.sources.r1.fileHeader = false
+#a1.sources.r1.deletePolicy = <%= node[:flume][:ngs_delete_policy] %>
 # all files that don't end in .fastq or .fasta
-#hops.sources.ngs.ignorePattern = ^((?!fast).)*$
-#hops.sources.ngs.batchSize = 10000
-#hops.sources.ngs.inputCharset = UTF-8
+#a1.sources.r1.ignorePattern = ^((?!fast).)*$
 
 
-hops.sinks.k1.type = hdfs
-hops.sinks.k1.channels = c1
-hops.sinks.k1.hdfs.path = hdfs://<%= @nn_addr %>/projects/<%= node[:flume][:project] %>/<%= node[:flume][:dataset] %>
-# %y-%m-%d/%H%M/%S
-#hops.sinks.k1.hdfs.path = /projects/<%= node[:flume][:project] %>/<%= node[:flume][:dataset] %>/%y-%m-%d
-#hops.sinks.k1.hdfs.round = true
-#hops.sinks.k1.hdfs.roundValue = 10
-#hops.sinks.k1.hdfs.roundUnit = minute
-#hops.sinks.k1.hdfs.fileType = DataStream
+
+a1.sinks.k1.type = hdfs
+a1.sinks.k1.channels = c1
+a1.sinks.k1.hdfs.path = /projects/<%= node[:flume][:project] %>/<%= node[:flume][:dataset] %>/
+a1.sinks.k1.hdfs.rollCount = 0
+a1.sinks.k1.hdfs.rollInterval = 0
+a1.sinks.k1.hdfs.rollSize = 1000000000
+a1.sinks.k1.hdfs.batchSize = 10000
+a1.sinks.k1.hdfs.idleTimeout = 0
+a1.sinks.k1.hdfs.fileType = DataStream
 # Write format can be text or writable
-#hops.sinks.k1.hdfs.writeFormat = Text
+a1.sinks.k1.hdfs.writeFormat = Text
+a1.sinks.k1.hdfs.filePrefix = bbc
+a1.sinks.k1.hdfs.maxOpenFiles = 2
+#a1.sinks.k1.hdfs.path = hdfs://<%= @nn_addr %>/projects/<%= node[:flume][:project] %>/<%= node[:flume][:dataset] %>/%y-%m-%d
+#a1.sinks.k1.hdfs.round = true
+#a1.sinks.k1.hdfs.roundValue = 10
+#a1.sinks.k1.hdfs.roundUnit = minute
 # use a single fastq file at a time
-#hops.sinks.k1.hdfs.maxOpenFiles = 2
-#hops.sinks.k1.hdfs.rollCount = 0
-#hops.sinks.k1.hdfs.rollInterval = 0
-# Never roll the file, based on file size
-#hops.sinks.k1.hdfs.rollSize = 0
 # number of events before the file is flushed to HDFS
-#hops.sinks.k1.hdfs.batchSize = 10000
-#hops.sinks.k1.hdfs.idleTimeout = 0
-#hops.sinks.k1.hdfs.filePrefix = bbc
 
 
 
-hops.channels.c1.type = memory
-hops.channels.c1.capacity = 1000
-hops.channels.c1.transactionCapacity = 100
+
+
+# Use a channel which buffers events in memory
+a1.channels.c1.type = memory
+a1.channels.c1.capacity = 200000
+a1.channels.c1.transactionCapacity = 160000
 # ~100 MB of capacity
-#hops.channels.c1.byteCapacity = 100013312 
+#a1.channels.c1.byteCapacity = 100013312 
+
+# Bind the source and sink to the channel
+a1.sources.r1.channels = c1
+a1.sinks.k1.channel = c1

@@ -1,35 +1,35 @@
-hops.sources = ngs
-hops.channels = c1
-hops.sinks = net1
+a1.sources = r1
+a1.channels = c1
+a1.sinks = k1
 
-hops.sources.ngs.type = spooldir
-hops.sources.ngs.spoolDir = <%= node[:flume][:ngs_dir] %>
-#/<%= node[:flume][:ngs_project] %>
-hops.sources.ngs.trackerDir = <%= node[:flume][:ngs_dir] %>
-#/tracker
-hops.sources.ngs.channels = c1
-hops.sources.ngs.fileHeader = false
-hops.sources.ngs.deletePolicy = <%= node[:flume][:ngs_delete_policy] %>
+a1.sources.r1.type = spooldir
+a1.sources.r1.spoolDir = <%= node[:flume][:ngs_dir] %>
+a1.sources.r1.fileHeader = false
+a1.sources.r1.deletePolicy = <%= node[:flume][:r1_delete_policy] %>
+a1.sources.r1.deserializer = org.apache.flume.sink.solr.morphline.BlobDeserializer$Builder
+a1.sources.r1.deserializer.maxBlobLength = 2000000000
+a1.sources.r1.batchSize = 1
 # all files that don't end in .fastq or .fasta
-#hops.sources.ngs.ignorePattern = ^((?!fast).)*$
-hops.sources.ngs.batchSize = 200
-hops.sources.ngs.inputCharset = UTF-8
+#a1.sources.r1.ignorePattern = ^((?!fast).)*$
+#a1.sources.r1.inputCharset = UTF-8
 
 
-hops.channels.c1.type = memory
-hops.channels.c1.capacity = 10000
-hops.channels.c1.transactionCapacity = 1000000
+a1.channels.c1.type = memory
+a1.channels.c1.capacity = 2000
+a1.channels.c1.transactionCapacity = 1600
 
 
-hops.sinks.net1.type = avro
-hops.sinks.net1.channels = c1
-hops.sinks.net1.serializer = net1_event
-hops.sinks.net1.hostname = <%= @hdfs_ip %>
-hops.sinks.net1.port = <%= node[:flume][:hdfs_port] %>
-#hops.sinks.net1.threads = <%= @num_cpus %>
-#hops.sinks.net1.ipFilter = true
-#hops.sinks.net1.ipFilter.rules = allow:ip:<%= @ngs_ip %>,deny:ip:*
-#hops.sinks.net1.ssl = true
-#hops.sinks.net1.keystore = This is the path to a Java keystore file. Required for SSL.
-#hops.sinks.net1.keystore-password =  password for the Java keystore. Required for SSL.
-#hops.sinks.net1.keystore-type = JKS
+a1.sinks.k1.type = avro
+a1.sinks.k1.serializer = k1_event
+a1.sinks.k1.hostname = <%= @hdfs_ip %>
+a1.sinks.k1.port = <%= node[:flume][:hdfs_port] %>
+#a1.sinks.k1.threads = <%= @num_cpus %>
+#a1.sinks.k1.ipFilter = true
+#a1.sinks.k1.ipFilter.rules = allow:ip:<%= @r1_ip %>,deny:ip:*
+#a1.sinks.k1.ssl = true
+#a1.sinks.k1.keystore = This is the path to a Java keystore file. Required for SSL.
+#a1.sinks.k1.keystore-password =  password for the Java keystore. Required for SSL.
+#a1.sinks.k1.keystore-type = JKS
+
+a1.sources.r1.channels = c1
+a1.sinks.k1.channel = c1

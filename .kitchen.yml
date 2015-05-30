@@ -28,9 +28,10 @@ suites:
       - recipe[hadoop::jhs]
       - recipe[hadoop::ps]
       - recipe[flume::install]
-#      - recipe[flume::ngs]
       - recipe[flume::localhost]
+      - recipe[flume::ngs]
       - recipe[flume::test-ngs]
+      - recipe[flume::hdfs]
 #      - recipe[flume::test-ngs-localhost]
     attributes:
          flume:

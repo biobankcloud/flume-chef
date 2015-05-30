@@ -1,40 +1,44 @@
-hops.sources = net1
-hops.channels = c1
-hops.sinks = HDFS
+a1.sources = net1
+a1.channels = c1
+a1.sinks = k1
 
 
-hops.sources.net1.type = avro
-hops.sources.net1.channels = c1
-hops.sources.net1.serializer = avro_event
-hops.sources.net1.channel = c1
-hops.sources.net1.bind = <%= @hdfs_ip %>
-hops.sources.net1.port = <%= node[:flume][:hdfs_port] %>
-#hops.sources.net1.threads = <%= @num_cpus %>
-#hops.sources.net1.ipFilter = true
-#hops.sources.net1.ipFilter.rules = allow:ip:<%= @ngs_ip %>,deny:ip:*
-#hops.sources.net1.ssl = true
-#hops.sources.net1.keystore = This is the path to a Java keystore file. Required for SSL.
-#hops.sources.net1.keystore-password =  password for the Java keystore. Required for SSL.
-#hops.sources.net1.keystore-type = JKS
+a1.sources.net1.type = avro
+a1.sources.net1.channels = c1
+a1.sources.net1.serializer = avro_event
+a1.sources.net1.channel = c1
+a1.sources.net1.bind = <%= @hdfs_ip %>
+a1.sources.net1.port = <%= node[:flume][:hdfs_port] %>
+#a1.sources.net1.threads = <%= @num_cpus %>
+#a1.sources.net1.ipFilter = true
+#a1.sources.net1.ipFilter.rules = allow:ip:<%= @ngs_ip %>,deny:ip:*
+#a1.sources.net1.ssl = true
+#a1.sources.net1.keystore = This is the path to a Java keystore file. Required for SSL.
+#a1.sources.net1.keystore-password =  password for the Java keystore. Required for SSL.
+#a1.sources.net1.keystore-type = JKS
 
-hops.channels.c1.type = file
-hops.channels.c1.capacity = 10000
-hops.channels.c1.transactionCapacity = 100
+a1.channels.c1.type = file
+a1.channels.c1.capacity = 20000
+a1.channels.c1.transactionCapacity = 10000
 
-hops.sinks.HDFS.channel = c1
-hops.sinks.HDFS.type = hdfs
+a1.sinks.k1.channel = c1
+a1.sinks.k1.type = hdfs
 # %Y-%m-%d-%H/
-hops.sinks.HDFS.hdfs.path = hdfs://<%= @nn_addr %>/data/<%= node[:flume][:ngs_user] %>/<%= node[:flume][:ngs_project] %>/
-hops.sinks.HDFS.hdfs.fileType = DataStream
-hops.sinks.HDFS.hdfs.writeFormat = Text
-hops.sinks.HDFS.hdfs.batchSize = 1000
-hops.sinks.HDFS.hdfs.rollSize = 0
-hops.sinks.HDFS.hdfs.rollCount = 10000
-hops.sinks.HDFS.hdfs.maxOpenFiles = 10000
-hops.sinks.HDFS.hdfs.callTimeout = 60000
-hops.sinks.HDFS.hdfs.threadsPoolSize = 10
-hops.sinks.HDFS.hdfs.kerberosPrincipal = 
-hops.sinks.HDFS.hdfs.kerberosKeytab = 
-hops.sinks.HDFS.proxyUser = <%= node[:flume][:ngs_user] %>
-hops.sinks.HDFS.serializer = TEXT
+#a1.sinks.k1.hdfs.path = hdfs://<%= @nn_addr %>/data/<%= node[:flume][:ngs_user] %>/<%= node[:flume][:ngs_project] %>/
+a1.sinks.k1.hdfs.path = /projects/<%= node[:flume][:project] %>/<%= node[:flume][:dataset] %>/
+a1.sinks.k1.hdfs.rollCount = 0
+a1.sinks.k1.hdfs.rollInterval = 0
+a1.sinks.k1.hdfs.rollSize = 1000000000
+a1.sinks.k1.hdfs.batchSize = 10000
+a1.sinks.k1.hdfs.idleTimeout = 0
+a1.sinks.k1.hdfs.fileType = DataStream
+a1.sinks.k1.hdfs.threadsPoolSize = 10
+a1.sinks.k1.hdfs.writeFormat = Text
+a1.sinks.k1.hdfs.filePrefix = bbc
+a1.sinks.k1.hdfs.maxOpenFiles = 2
+#a1.sinks.k1.hdfs.kerberosPrincipal = 
+#a1.sinks.k1.hdfs.kerberosKeytab = 
+#a1.sinks.k1.proxyUser = <%= node[:flume][:ngs_user] %>
 
+a1.sources.r1.channels = c1
+a1.sinks.k1.channel = c1
